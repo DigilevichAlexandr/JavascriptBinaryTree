@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Tree</title>
+</head>
+<body>
+    <div> 
+
+    </div>
+    <script type="text/javascript">
+        var Node = function (val) {
+            this.left = null;
+            this.right = null;
+            this.nodeval = val;
+        };
+
+        var Tree = function (firstval) {
+            this.root = new Node(firstval);
+            this.insert = function (val) {
+                if (this.root == null || this.root === undefined)
+                    this.root = new Node(val);
+                else {
+                    var node = this.root;
+                    var ins = function (node, val) {
+                        if (val < node.nodeval)
+                            if (node.left == null) {
+                                node.left = new Node(val);
+                            }
+                            else {
+                                ins(node.left, val);
+                            }
+                        if (val >= node.nodeval)
+                            if (node.right == null) {
+                                node.right = new Node(val);
+                            }
+                            else {
+                                ins(node.right, val);
+                            }
+                    };
+                    ins(node, val);
+                }
+            };
+
+            this.incertmany = function () {
+                for (var i = 0; i < arguments.length; i++) {
+                    this.insert(arguments[i]);
+                }
+            };
+
+            this.print = function () {
+                var pr = function (node) {
+                    if (node != null) {
+                        if (node.left != null) {
+                            pr(node.left);
+                        }
+                        console.log(node.nodeval);
+                        document.write(node.nodeval.toString() + " ");
+                        if (node.right != null) {
+                            pr(node.right);
+                        }
+                    }
+
+                };
+                pr(this.root);
+            };
+
+        };
+
+        var t1 = new Tree(12);
+        t1.incertmany(1, 4, 2, 65, 3, 4, 2, 77);
+        t1.print();
+
+        Tree.prototype.delete = function (val) {
+            if (this.root != null) {
+                if(this.root.nodeval==val){
+                    var temproot = this.root.right;
+                    var templastleft =this.root.left;
+                    var tempcur = temproot.left;
+                    if (tempcur==null){
+                    temproot.left=templastleft
+                    }
+                    else{
+                        while(tempcur.left!=null){
+                            var temp = tempcur.left;
+                            tempcur=temp;
+                        }
+                        tempcur.left=templastleft;
+                    }
+                }
+                else{
+                    var prev = new Node(this.root.nodeval);
+                    var find = function (node, val) {
+                        if (node != null && node.nodeval!=val) {
+                            if (val > node.nodeval) {
+                                prev.left = null;
+                                prev = node;
+                                find(node.right, val);
+                            }
+                            else {
+                                prev.right = null;
+                                prev = node;
+                                find(node.left, val);
+                            }
+                        }
+                    }                
+                    find(this.root,val);
+                    if (prev.left != null && prev.left.nodeval == val) {
+                        if (prev.left.left == null) {
+                            var temp = prev.left.right;
+                            prev.left = temp;
+                            return;
+                        }
+                        else {
+                            var temp = prev.left.left;
+                            prev.left = temp;
+                        }
+                    }
+                    if (prev.right != null && prev.right.nodeval == val) {
+                        if (prev.right.left == null) {
+                            var temp = prev.right.right;
+                            prev.right = temp;
+                            return;
+                        }
+                        else {
+                            var temp = prev.right.left;
+                            prev.right = temp;
+                        }
+                    }
+                }                
+            };            
+        };
+
+        t1.delete(65);
+        t1.print();
+    </script>
+</body>
+</html>
