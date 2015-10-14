@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Tree</title>
+</head>
+<body>
+    <div> 
+
+    </div>
+    <script type="text/javascript">
+        var Node = function (val) {
+            this.left = null;
+            this.right = null;
+            this.nodeval = val;
+        };
+
+        var Tree = function (firstval) {
+            this.root = new Node(firstval);
+            this.insert = function (val) {
+                if (this.root == null || this.root === undefined)
+                    this.root = new Node(val);
+                else {
+                    var node = this.root;
+                    var ins = function (node, val) {
+                        if (val < node.nodeval)
+                            if (node.left == null) {
+                                node.left = new Node(val);
+                            }
+                            else {
+                                ins(node.left, val);
+                            }
+                        if (val >= node.nodeval)
+                            if (node.right == null) {
+                                node.right = new Node(val);
+                            }
+                            else {
+                                ins(node.right, val);
+                            }
+                    };
+                    ins(node, val);
+                }
+            };
+
+            this.incertmany = function () {
+                for (var i = 0; i < arguments.length; i++) {
+                    this.insert(arguments[i]);
+                }
+            };
+
+            this.print = function () {
+                var pr = function (node) {
+                    if (node != null) {
+                        if (node.left != null) {
+                            pr(node.left);
+                        }
+                        console.log(node.nodeval);
+                        document.write(node.nodeval + " ");
+                        if (node.right != null) {
+                            pr(node.right);
+                        }
+                    }
+
+                };
+                pr(this.root);
+            };
+
+        };
+
+        var t1 = new Tree(12);
+        t1.incertmany(1, 4, 2, 65, 3, 4, 2, 77);
+        t1.print();
+        var deleteNode = function (val) {
+            var pointer = this.root;
+            var parent = null;
+
+            while (pointer != null && pointer.nodeval != val) {
+                parent = pointer;
+                if (val < pointer.nodeval)
+                    pointer = pointer.left;
+                else
+                    pointer = pointer.right;
+            }
+
+            if (pointer != null) {
+                var removed = null;
+
+                if (pointer.left == null || pointer.right == null) {
+                    var child = null;
+                    removed = pointer;
+
+                    if (pointer.left != null) 
+                        child = pointer.left;
+                    else 
+                        if (pointer.right != null)
+                            child = pointer.right;
+                        
+                    if (parent == null)
+                        this.root = child;
+                    else
+                    {
+                        if (parent.left == pointer)
+                            parent.left = child;
+                        else
+                            parent.right = child;
+                    }                    
+                }
+                else // (pointer->left != NULL && pointer->right != NULL)
+                {
+                    var mostLeft = pointer.right;
+                    var mostLeftParent = pointer;
+            
+                    while (mostLeft.left != null)
+                    {
+                        mostLeftParent = mostLeft;
+                        mostLeft = mostLeft.left;
+                    }
+ 
+                    pointer.value = mostLeft.value;
+                    removed = mostLeft;
+ 
+                    if (mostLeftParent.left == mostLeft)
+                        mostLeftParent.left = null;
+                    else
+                        mostLeftParent.right = null;
+                }
+            }
+        };
+
+        var AdvancedBinaryTree = function () {
+            Tree.apply(this, arguments);
+        };
+
+        //var Temp = function () { };
+
+        //Temp.prototype = Tree.prototype;
+        //AdvancedBinaryTree.prototype = Temp;
+        AdvancedBinaryTree.prototype = Object.create(Tree.prototype);
+
+        AdvancedBinaryTree.prototype.deleteNode = deleteNode;
+
+        var abt1 = new AdvancedBinaryTree(13);
+        abt1.incertmany(3,12, 32, 4,2,1, 23, 43);
+        document.write('-');
+        abt1.print();
+        abt1.deleteNode(12);
+        document.write('-');
+        abt1.print();
+        abt1.deleteNode(2);
+        document.write('-');
+        abt1.print();
+        //============================prind html tree========================
+        //Tree.prototype.printHtml = function () {
+        //    var prhtml = function (node) {
+        //        if (node != null) {
+        //            if (node.left != null) {
+        //                pr(node.left);
+        //            }
+                    
+        //            if (node.right != null) {
+        //                pr(node.right);
+        //            }
+        //        }
+
+        //    }
+        //    prhtml(this.root);
+        //}
+
+        //var el = document.documentElement.nodeName;
+        //document.write(el.length);
+        //el
+    </script>
+</body>
+</html>
